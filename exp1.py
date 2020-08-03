@@ -19,7 +19,7 @@ class personaje(object):
 		self.quieto = pygame.image.load("img/"+fuente+"/f1.png")
 		self.ancho = self.quieto.get_width()
 		self.alto = self.quieto.get_height()
-		self.velocidad = 5
+		self.velocidad = 9
 
 	def dibujar(self, cuadro):
 		cuadro.blit(self.quieto,(self.x,self.y))
@@ -49,8 +49,7 @@ def repintar_cuadro_juego():
 
 # Inicio Funcion principal
 
-repetir = True #Variable que controla la repeticion del juego completo con todas sus pantallas
-#Ciclo de repeticion de todo el juego
+repetir = True 
 while repetir:
 
 	# Inicializacion de elementos del juego
@@ -59,14 +58,13 @@ while repetir:
 	musica_fondo = pygame.mixer.music.load(ruta_musica)
 	pygame.mixer.music.play(-1)
 
-	#Creación Personaje Héroe
+	#Creación del prota
 	prota=personaje(int(ventana_x/2), int(ventana_y/2),"personajes")
 	
 	
 	# Seccion de juego
 	esta_jugando=True
 	while esta_jugando:
-		# control de velocidad del juego
 		reloj.tick(27)
 		# evento de boton de cierre de ventana
 		for evento in pygame.event.get():
@@ -76,5 +74,5 @@ while repetir:
 		teclas=pygame.key.get_pressed()
 		prota.se_mueve_segun(teclas,pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
 		repintar_cuadro_juego()
-# Termina el juego y finaliza los elementos de pygame
+# Termina el juego
 pygame.quit()
