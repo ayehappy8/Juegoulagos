@@ -26,7 +26,7 @@ class personaje(object):
 		fuente += "/"
 		self.camina_izquierda = [pygame.image.load("img/"+fuente+"/l1.png"), pygame.image.load("img/"+fuente+"/l2.png"), pygame.image.load("img/"+fuente+"/l3.png"), pygame.image.load("img/"+fuente+"/l4.png")]
 		self.camina_derecha = [pygame.image.load("img/"+fuente+"/r1.png"), pygame.image.load("img/"+fuente+"/r2.png"), pygame.image.load("img/"+fuente+"/r3.png"), pygame.image.load("img/"+fuente+"/r4.png")]
-		self.camina_frente = [pygame.image.load("img/"+fuente+"/f1.png"), pygame.image.load("img/"+fuente+"/f2.png"), pygame.image.load("img/"+fuente+"/f3.png"), pygame.image.load("img/"+fuente+"/f4.png")]
+		self.camina_frente = [pygame.image.load("img/"+fuente+"/f2.png"), pygame.image.load("img/"+fuente+"/f3.png")]
 		self.camina_back = [pygame.image.load("img/"+fuente+"/b1.png"), pygame.image.load("img/"+fuente+"/b2.png"), pygame.image.load("img/"+fuente+"/b3.png"), pygame.image.load("img/"+fuente+"/b4.png")]
 		self.quieto = pygame.image.load("img/"+fuente+"/f1.png")
 		self.ancho = self.quieto.get_width()
@@ -50,7 +50,7 @@ class personaje(object):
 			self.contador_pasos += 1
 
 		elif self.va_frente:
-			cuadro.blit(self.camina_frente[self.contador_pasos//7],(self.x,self.y))
+			cuadro.blit(self.camina_frente[self.contador_pasos//14],(self.x,self.y))
 			self.contador_pasos += 1
 
 		else:
