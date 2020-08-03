@@ -35,7 +35,7 @@ reloj = pygame.time.Clock()
 def repintar_cuadro_juego():
 	#ventana.fill((0,0,0))
 	ventana.blit(imagen_fondo,(0,0))
-	f1,dubujar(ventana)
+	prota,dubujar(ventana)
 	pygame.display.update()
 
 # Inicio Funcion principal

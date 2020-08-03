@@ -8,6 +8,7 @@ ventana = pygame.display.set_mode((ventana_x,ventana_y))
 pygame.display.set_caption("The game")
 reloj = pygame.time.Clock()
 #clase de personaje
+
 	class personaje(object):
 		def __init__(self, x, y, fuente:
 			self.x = x
@@ -18,7 +19,7 @@ reloj = pygame.time.Clock()
 			self.alto = self.quieto.get_height()
 			self.velocidad = 5
 
-		def dibujar(self,cuadro):
+		def dibujar(self, cuadro):
 			cuadro.blit(self.quieto, (self.x,self.y))
 
 		def se_mueve_segun(self,k,iz,de,ar,ab):
@@ -35,7 +36,7 @@ reloj = pygame.time.Clock()
 def repintar_cuadro_juego():
 	#ventana.fill((0,0,0))
 	ventana.blit(imagen_fondo,(0,0))
-	f1,dubujar(ventana)
+	prota,dibujar(ventana)
 	pygame.display.update()
 
 # Inicio Funcion principal
@@ -61,7 +62,7 @@ while repetir:
 	alto2=80
 	ancho2=100
 	#The prota
-	f1 = personaje(int(ventana_x/2),int(ventana_y/2),"f1")
+	prota = personaje(int(ventana_x/2),int(ventana_y/2),"personajes")
 		
 	# Seccion de juego
 	esta_jugando=True
@@ -74,7 +75,7 @@ while repetir:
 				quit()
 
 		teclas=pygame.key.get_pressed()
-	f1.se_mueve_segun(teclas,pygame.K_LEFT, pygame.k_RIGHT, pygame.K_UP, pygame.K_DOWN)
+	prota.se_mueve_segun(teclas,pygame.K_LEFT, pygame.k_RIGHT, pygame.K_UP, pygame.K_DOWN)
 
 
 
