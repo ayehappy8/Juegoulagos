@@ -116,8 +116,8 @@ class personaje(object):
 		
 	#recibir daño
 	def es_golpeado(self):
-		self.x = 100
-		self.y = 410
+		self.x = 600
+		self.y = 200
 		self.contador_pasos = 0
 		self.salud -= 5
 		pygame.time.delay(200)
