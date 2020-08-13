@@ -28,7 +28,7 @@ class personaje(object):
 		self.ancho = self.quieto.get_width()
 		self.alto = self.quieto.get_height()
 		#Controles de desplazamiento automático
-		self.camino = [self.x,self.y, limite]
+		self.camino = [self.x, limite]
 		#Nivel de Salud
 		self.salud = 10
 		#Hitbox
@@ -129,8 +129,6 @@ class personaje(object):
 				self.x += self.velocidad-5
 				self.va_derecha = True
 				self.va_izquierda = False
-				self.va_frente = False
-				self.va_back = False
 			else:
 				self.velocidad = self.velocidad * -1
 				self.contador_pasos = 0
@@ -139,8 +137,6 @@ class personaje(object):
 				self.x += self.velocidad-5 
 				self.va_izquierda = True
 				self.va_derecha = False
-				self.va_frente = False
-				self.va_back = False
 			else:
 				self.velocidad = self.velocidad* -1
 				self.contador_pasos = 0
@@ -222,7 +218,7 @@ while repetir:
 
 	#Creación Personaje Héroe
 	heroe=personaje(int(ventana_x/2), int(ventana_y/2),"heroe", ventana_x)#Agregar límite
-	villano=personaje(0, int((ventana_y/2)+10),"villano",int(ventana_x/2))
+	villano=personaje(0, int(ventana_y/2),"villano",int(ventana_x/2))
 
 	#Variables Balas
 	tanda_disparos = 0
@@ -263,8 +259,6 @@ while repetir:
 			# movimiento de la bala dentro de los limites de la ventana
 			if bala.x < ventana_x and bala.x > 0:
 				bala.x += bala.velocidad
-			elif bala.y< ventana_y and bala.y > 0:
-				bala.y += bala.velocidad
 			else:
 				balas.pop(balas.index(bala)) # se elimina la bala fuera de la ventana
 
@@ -275,7 +269,7 @@ while repetir:
 			elif heroe.va_derecha:
 				direccion = 1
 			elif heroe.va_frente:
-				direccion = 1
+				direccion = -1
 			elif heroe.va_back:
 				direccion = -1
 			else:
