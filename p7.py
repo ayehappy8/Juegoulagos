@@ -12,7 +12,7 @@ reloj = pygame.time.Clock()
 
 class personaje(object):
 
-	def __init__(self, x, y, fuente, limite):
+	def __init__(self, x, y, fuente):
 		self.x = x
 		self.y = y
 		
@@ -31,7 +31,12 @@ class personaje(object):
 		self.quieto = pygame.image.load("img/"+fuente+"/f1.png")
 		self.ancho = self.quieto.get_width()
 		self.alto = self.quieto.get_height()
-		self.camino=[self.x, limite]
+
+
+
+		#salud
+		self.salud = 10
+
 
 	def dibujar(self, cuadro):
 
@@ -57,6 +62,9 @@ class personaje(object):
 		else:
 
 			cuadro.blit(self.quieto,(self.x,self.y))
+
+		#clase vida barra
+	pygame.draw.rect(cuadro, (255,0,0),(self.x+5, self.y - 20,50,10))
 
 
 	def se_mueve_segun(self, k, iz, de, ar, ab):
@@ -97,25 +105,6 @@ class personaje(object):
 			self.va_back = False
 			self.contador_pasos = 0
 
-	def se_mueve_solo(self):
-		if self.velocidad >0:
-			if self.x+self.velocidad < self.camino[1]:
-				self.x+=self.velocidad
-				self.va_derecha=True
-				self.va_izquierda=False
-			else:
-				self.velocidad = self.velocidad * -1
-				self.contador_pasos = 0
-		else:
-			if self.x-self.velocidad> self.camino[0]:
-				self.x+= self.velocidad
-				self.va_izquierda = True
-				self.va_derecha =False
-			else:
-				self.velocidad = self.velocidad * -1
-				self.contador_pasos = 0
-
-
 #Función para repintar el cuadro de juego
 def repintar_cuadro_juego():
 	#Dibujar fondo del nivel
@@ -123,7 +112,6 @@ def repintar_cuadro_juego():
 	ventana.blit(imagen_fondo,(0,0))
 	#Dibujar Personaje
 	prota.dibujar(ventana)
-	villano.dibujar(ventana)
 	#Se refresca la imagen
 	pygame.display.update()
 
@@ -139,8 +127,8 @@ while repetir:
 	pygame.mixer.music.play(-1)
 
 	#Creación del prota
-	prota=personaje(int(ventana_x/2), int(ventana_y/2),"personajes",ventana_x)
-	villano=personaje(float(0, ventana_y/2),"villano",int(ventana_x/2))
+	prota=personaje(int(ventana_x/2), int(ventana_y/2),"personajes")
+	
 	
 	# Seccion de juego
 	esta_jugando=True
@@ -153,7 +141,6 @@ while repetir:
 		
 		teclas=pygame.key.get_pressed()
 		prota.se_mueve_segun(teclas,pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
-		villano.se_mueve_solo()
 		repintar_cuadro_juego()
 # Termina el juego
 pygame.quit()
