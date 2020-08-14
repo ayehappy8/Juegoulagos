@@ -73,7 +73,7 @@ class personaje(object):
 		self.zona_impacto_pared5 = (20,440,300,70)
 		self.zona_impacto_pared6 = (480,440,300,70)
 		#En caso de querer visualizar el hitbox, descomentar la siguiente linea
-		pygame.draw.rect(cuadro, (255,0,0), self.zona_impacto, 2)
+		#pygame.draw.rect(cuadro, (255,0,0), self.zona_impacto, 2)
 		"""
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared2, 2)
