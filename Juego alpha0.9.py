@@ -18,8 +18,6 @@ class personaje(object):
 		#Atributos para animación de Sprites
 		self.va_izquierda = False
 		self.va_derecha = False
-		self.va_back = False
-		self.va_frente = False
 		self.contador_pasos = 0
 		fuente += "/"
 		self.camina_izquierda = [pygame.image.load("img/"+fuente+"l1.png"),pygame.image.load("img/"+fuente+"l2.png"),pygame.image.load("img/"+fuente+"l3.png"),pygame.image.load("img/"+fuente+"l4.png")]
@@ -74,14 +72,12 @@ class personaje(object):
 		self.zona_impacto_pared6 = (480,440,300,70)
 		#En caso de querer visualizar el hitbox, descomentar la siguiente linea
 		pygame.draw.rect(cuadro, (255,0,0), self.zona_impacto, 2)
-		"""
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared2, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared3, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared4, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared5, 2)
 		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared6, 2)
-		"""
 		#Crear clase barra de vida
 		pygame.draw.rect(cuadro, (255,0,0), (self.zona_impacto[0], self.zona_impacto[1] - 20, 50, 10))
 		pygame.draw.rect(cuadro, (0,128,0), (self.zona_impacto[0], self.zona_impacto[1] - 20, 50 - (5 * (10 - self.salud)), 10))
@@ -194,11 +190,8 @@ class proyectil(object):
 #Función para repintar el cuadro de juego
 def repintar_cuadro_juego():
 	#Dibujar fondo del nivel
-	if nivel <= nivel_maximo:
-			ventana.blit(imagen_fondo[nivel],(0,0))
-	else:
-		ventana.fill((0,0,0))
-
+	#ventana.fill((0,0,0))
+	ventana.blit(imagen_fondo,(0,0))
 	#Dibujar Héroe
 	heroe.dibujar(ventana)
 	#Dibujar Villano
@@ -207,40 +200,10 @@ def repintar_cuadro_juego():
 	for bala in balas:
 		bala.dibujar(ventana)
 	#textos
-	puntos = texto_puntos.render('Puntaje: ' + str(puntaje),1,(3,195,15))
-	nivel_actual = texto_nivel.render('Nivel: ' + str(nivel),1,(3,195,15))
+	puntos = texto_puntos.render('puntaje: ' + str(puntaje),1,(3,195,15))
 	ventana.blit(puntos,(20,450))
-	ventana.blit(nivel_actual,(20,40))
 	#Se refresca la imagen
 	pygame.display.update()
-
-	#level up
-def subir_nivel():
-	global nivel
-	global nivel_maximo
-	global villano
-	global musica_fondo
-	global ventana
-	global esta_jugando
-
-	nivel += 1
-	#texto level up
-	texto = pygame.font.SysFont('comicsans',100)
-	Marcador = texto.render('TOMA!! GANASTE', 1,(169, 252, 5))
-	ventana.blit(Marcador,(400 - (Marcador.get_width()//2), 200))
-	pygame.display.update()
-	pygame.time.delay(2000)
-	#verificasao
-	#se gana
-	if nivel > nivel_maximo:
-		pygame.mixer.music.stop()
-		esta_jugando = False
-	#intermedio
-	else:
-		villano = villanos[nivel]
-
-
-
 
 # Inicio Funcion principal
 
@@ -249,9 +212,7 @@ repetir = True #Variable que controla la repeticion del juego completo con todas
 while repetir:
 
 	# Inicializacion de elementos del juego
-	nivel = 0
-	nivel_maximo = 3
-	imagen_fondo = [pygame.image.load('img/Ecenario/habitacion1.png'), pygame.image.load('img/Ecenario/habitacion2.png'), pygame.image.load('img/Ecenario/habitacion3.png'),pygame.image.load('img/Ecenario/habitacion3.png')]
+	imagen_fondo = pygame.image.load('img/Ecenario/habitacion1.png')
 	ruta_musica = "music/musicaf.mp3"
 	musica_fondo = pygame.mixer.music.load(ruta_musica)
 	pygame.mixer.music.play(-1)
@@ -259,12 +220,10 @@ while repetir:
 	#the puntuacion
 	puntaje = 0
 	texto_puntos = pygame.font.SysFont('Footlight MT Light', 40, True)
-	texto_nivel = pygame.font.SysFont('Footlight MT Light', 50, True)
+
 	#Creación Personaje Héroe
 	heroe=personaje(int(ventana_x/2), int(ventana_y/2),"heroe", ventana_x)#Agregar límite
-
-	villanos = [personaje(10, int(ventana_y - 400),"villano",800),personaje(10, int(ventana_y - 150),"villano",800), personaje(40, int(ventana_y - 250),"villano",800),  personaje(60, int(ventana_y - 300),"villano",800)]
-	villano= villanos[nivel]
+	villano=personaje(0, int(ventana_y/2),"villano",int(ventana_x/2))
 
 	#Variables Balas
 	tanda_disparos = 0
@@ -327,12 +286,6 @@ while repetir:
 				balas.append(proyectil(round(heroe.x + heroe.ancho // 2), round(heroe.y + heroe.alto // 2), 6, (230,0,0), direccion))
 				sonido_bala.play() # al momento de disparar
 			tanda_disparos = 1
-			#se sube el nivel
-			if villano.salud <= 0:
-				subir_nivel()
-			#otro caso
-			if heroe.salud <= 0:
-				esta_jugando = False
 		repintar_cuadro_juego()
 # Termina el juego y finaliza los elementos de pygame
 pygame.quit()
