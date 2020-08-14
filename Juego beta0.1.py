@@ -66,22 +66,10 @@ class personaje(object):
 		
 		#Dibujar hitbox
 		self.zona_impacto = (self.x + 15, self.y + 10, 65, 85)
-		self.zona_impacto_pared=(20,20,380,70)
-		self.zona_impacto_pared2 = (480,20,300,70)
-		self.zona_impacto_pared3 = (20,20,70,500)
-		self.zona_impacto_pared4 = (760,20,70,500)
-		self.zona_impacto_pared5 = (20,440,300,70)
-		self.zona_impacto_pared6 = (480,440,300,70)
+
 		#En caso de querer visualizar el hitbox, descomentar la siguiente linea
 		#pygame.draw.rect(cuadro, (255,0,0), self.zona_impacto, 2)
-		"""
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared, 2)
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared2, 2)
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared3, 2)
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared4, 2)
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared5, 2)
-		pygame.draw.rect(cuadro, (0,255,0), self.zona_impacto_pared6, 2)
-		"""
+
 		#Crear clase barra de vida
 		pygame.draw.rect(cuadro, (255,0,0), (self.zona_impacto[0], self.zona_impacto[1] - 20, 50, 10))
 		pygame.draw.rect(cuadro, (0,128,0), (self.zona_impacto[0], self.zona_impacto[1] - 20, 50 - (5 * (10 - self.salud)), 10))
@@ -168,18 +156,21 @@ class personaje(object):
 		pygame.time.delay(200)	
 #Clase Proyectil
 class proyectil(object):
-	def __init__(self, x,y,radio,color, direccion):
+	def __init__(self, x,y,radio,color, direccion, destino):
 		self.x = x
 		self.y = y
 		self.radio = radio
 		self.color = color
 		self.direccion = direccion
 		self.velocidad = 8 * direccion
+		self.destino = destino
+		self.imagen = pygame.transform.scale(pygame.image.load("img/proyectil/p.png"),(self.radio,self.radio))
 		self.zona_impacto = (self.x-self.radio, self.y-self.radio, self.radio*3, self.radio*3)
 
 	def dibujar(self, cuadro):
 		self.zona_impacto = (self.x-self.radio, self.y-self.radio, self.radio*3, self.radio*3)
-		pygame.draw.circle(cuadro, self.color, (self.x, self.y), self.radio)
+		cuadro.blit(self.imagen,(self.x,self.y))
+		#pygame.draw.circle(cuadro, self.color, (self.x, self.y), self.radio)
 		#visualizar el hitbox
 		#pygame.draw.rect(cuadro, (255,0,0), self.zona_impacto, 2)
 
@@ -190,6 +181,12 @@ class proyectil(object):
 		else:
 			#alguien.es_visible = False
 			del(alguien)
+	def se_mueve(self):
+		if self.destino == "arriba" or self.destino == "abajo":
+			self.y+=self.velocidad
+		elif self.destino == "izquierda" or self.destino == "derecha":
+			self.x += self.velocidad	
+
 
 #Función para repintar el cuadro de juego
 def repintar_cuadro_juego():
@@ -305,26 +302,30 @@ while repetir:
 				puntaje += 1
 
 			# movimiento de la bala dentro de los limites de la ventana
-			if bala.x < ventana_x and bala.x > 0:
-				bala.x += bala.velocidad
+			if bala.x < ventana_x and bala.x > 0 and bala.y < ventana_y and bala.y >= 0:
+				bala.se_mueve()
 			else:
 				balas.pop(balas.index(bala)) # se elimina la bala fuera de la ventana
 
 		# capturar evento del disparo
 		if teclas[pygame.K_x] and tanda_disparos == 0:
 			if heroe.va_izquierda:
+				destino = "izquierda"
 				direccion = -1
 			elif heroe.va_derecha:
+				destino = "derecha"
 				direccion = 1
 			elif heroe.va_frente:
-				direccion = -1
+				destino = "abajo"
+				direccion = 1
 			elif heroe.va_back:
+				destino = "arriba"
 				direccion = -1
 			else:
 				direccion = -1
 
 			if len(balas) < 5: # balas en pantalla
-				balas.append(proyectil(round(heroe.x + heroe.ancho // 2), round(heroe.y + heroe.alto // 2), 6, (230,0,0), direccion))
+				balas.append(proyectil(round(heroe.x + heroe.ancho // 2), round(heroe.y +30), 30, (230,0,0), direccion,destino))
 				sonido_bala.play() # al momento de disparar
 			tanda_disparos = 1
 			#se sube el nivel
